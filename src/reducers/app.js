@@ -39,6 +39,7 @@ const getTemps = (cities) => {
 };
 
 const weather = (state = initialState, action) => {
+    let filteredCities;
     switch (action.type) {
     case actionTypes.APP.REQUEST.INIT:
         return {
@@ -59,6 +60,7 @@ const weather = (state = initialState, action) => {
         }
 
         const selectedCity = Lockr.get('selectedCity');
+        filteredCities = Lockr.get('filteredCities') || [];
 
         return {
             ...state,
@@ -67,6 +69,7 @@ const weather = (state = initialState, action) => {
             minTemp: temps.min,
             maxTemp: temps.max,
             selectedCity,
+            filteredCities,
         };
 
     case actionTypes.APP.REQUEST.ERROR:
@@ -85,6 +88,7 @@ const weather = (state = initialState, action) => {
         };
 
     case actionTypes.APP.CITY.REQUEST.SUCCESS:
+
         return {
             ...state,
             isFetchingCity: false,
@@ -101,15 +105,23 @@ const weather = (state = initialState, action) => {
         };
 
     case actionTypes.APP.CITY.FILTER.ADD:
+        filteredCities = [...state.filteredCities];
+        filteredCities.push(action.city);
+
+        Lockr.set('filteredCities', filteredCities);
+
         return {
             ...state,
-            ...state.filteredCities.push(action.city),
+            filteredCities,
         };
 
     case actionTypes.APP.CITY.FILTER.REMOVE:
+        filteredCities = state.filteredCities.filter(city => city.id !== action.city.id);
+        Lockr.set('filteredCities', filteredCities);
+
         return {
             ...state,
-            filteredCities: state.filteredCities.filter(city => city.id !== action.city.id),
+            filteredCities,
         };
 
     default:

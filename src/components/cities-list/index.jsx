@@ -12,9 +12,9 @@ class CitiesList extends Component {
         this.selectCity = this.selectCity.bind(this);
     }
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.appState.selectedCity !== this.props.appState.selectedCity;
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     return nextProps.appState.selectedCity !== this.props.appState.selectedCity;
+    // }
 
     setCityInfo(city) {
         const { appState: { selectedCity } } = this.props;
@@ -58,8 +58,16 @@ class CitiesList extends Component {
     }
 
     render() {
-        const { cities } = this.props.appState;
-        const list = cities.map(city => this.setCityInfo(city));
+        const { cities, filteredCities } = this.props.appState;
+
+        const list = cities
+            .filter((city) => {
+                if (filteredCities.length === 0) {
+                    return true;
+                }
+                return filteredCities.filter(search => search.id === city.id).length;
+            })
+            .map(city => this.setCityInfo(city));
 
         return (
             <div className="row">

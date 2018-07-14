@@ -11,7 +11,7 @@ import './styles.scss';
 
 const getCities = searchText => citiesList.filter((city) => {
     if (searchText !== '') {
-        return city.city.includes(searchText);
+        return city.city.toLowerCase().includes(searchText.toLowerCase());
     }
     return false;
 });
@@ -40,34 +40,43 @@ class SearchForm extends Component {
             return '';
         }
 
-        const listCities = this.state.listCities.map((city, idx) => {
-            const search = this.state.searchText;
-            const parts = city.city.split(new RegExp(search, 'g'));
+        const { filteredCities } = this.props.appState;
 
-            const text = parts.map((part, idxPart) => {
-                const keyPart = idxPart + 1;
-                if (parts.length === keyPart) {
-                    return (<span key={keyPart}>{part}</span>);
+        const listCities = this.state.listCities
+            .filter((city) => {
+                if (filteredCities.length === 0) {
+                    return true;
                 }
+                return filteredCities.filter(search => search.id !== city.id).length;
+            })
+            .map((city, idx) => {
+                const search = this.state.searchText;
+                const parts = city.city.split(new RegExp(search, 'gi'));
+
+                const text = parts.map((part, idxPart) => {
+                    const keyPart = idxPart + 1;
+                    if (parts.length === keyPart) {
+                        return (<span key={keyPart}>{part}</span>);
+                    }
+                    return (
+                        <span key={keyPart}>
+                            {part}<b className="text-primary">{search}</b>
+                        </span>
+                    );
+                });
+
                 return (
-                    <span key={keyPart}>
-                        {part}<b className="text-primary">{search}</b>
-                    </span>
+                    <ListGroupItem
+                        key={city.id}
+                        tag="a"
+                        href="#"
+                        active={this.state.position === idx + 1}
+                        onClick={evt => this.selectPosition(city, evt)}
+                    >
+                        {text}
+                    </ListGroupItem>
                 );
             });
-
-            return (
-                <ListGroupItem
-                    key={city.id}
-                    tag="a"
-                    href="#"
-                    active={this.state.position === idx + 1}
-                    onClick={evt => this.selectPosition(city, evt)}
-                >
-                    {text}
-                </ListGroupItem>
-            );
-        });
 
         return (
             <ListGroup className="cities-list-searh-result">
