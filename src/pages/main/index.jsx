@@ -20,8 +20,8 @@ class Main extends Component {
             <CityInfo city={cityInfo} />;
 
         return (
-            <div className="row mt-5">
-                <div className="col">
+            <div className="row ml-md-4 mt-4 main-container">
+                <div className="col-12">
                     {html}
                 </div>
             </div>

@@ -71,6 +71,8 @@ const weather = (state = initialState, action) => {
         };
 
     case actionTypes.APP.CITY.REQUEST.INIT:
+        Lockr.set('selectedCity', action.selectedCity);
+
         return {
             ...state,
             isFetchingCity: true,
@@ -81,7 +83,10 @@ const weather = (state = initialState, action) => {
         return {
             ...state,
             isFetchingCity: false,
-            cityInfo: action.success,
+            cityInfo: {
+                name: state.cities.filter(city => city.id === state.selectedCity)[0].name,
+                data: action.success,
+            },
         };
 
     case actionTypes.APP.CITY.REQUEST.ERROR:

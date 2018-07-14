@@ -14,7 +14,7 @@ class Sidebar extends Component {
         return (
             <div className="sidebar__content row">
 
-                <div className="col-12 sidebar__row">
+                <div className="col-12 sidebar__row mt-4">
                     <Collapsible
                         icon="search"
                         title="Search Cities"
@@ -23,7 +23,7 @@ class Sidebar extends Component {
                     </Collapsible>
                 </div>
 
-                <div className="col-12 sidebar__row sidebar-cities-list">
+                <div className="col-12 sidebar__row sidebar-cities-list mt-4">
                     <Collapsible
                         icon="list"
                         title="Cities List"

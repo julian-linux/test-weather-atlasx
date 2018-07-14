@@ -5,16 +5,13 @@ import Lockr from 'lockr';
 import actionCreator from './actionCreators/app';
 
 const requestCity = async (city, dispatch) => {
-    console.log("will request city", city);
     try {
         const params = {
             id: city,
         };
         const response = await get('weather.forecast', params);
-        console.log("response", response);
         dispatch(actionCreator.appRequestCitySuccess(response.body.list));
     } catch (error) {
-        console.log("error", error);
         dispatch(actionCreator.appRequestCityError(error));
     }
 };
@@ -50,7 +47,6 @@ const init = () => (dispatch, getState) => {
 
 const selectCity = city => (dispatch, getState) => {
     const { app } = getState();
-    console.log("app.isFetchingCity", app.isFetchingCity);
     if (!app.isFetchingCity) {
         dispatch(actionCreator.appRequestCityInit(city));
         requestCity(city, dispatch);

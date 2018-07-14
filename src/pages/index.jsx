@@ -30,10 +30,10 @@ class App extends Component {
         } else {
             html = (
                 <div className="row">
-                    <div className="col-md-4 sidebar__container">
+                    <div className="col-md-4 ">
                         <Sidebar />
                     </div>
-                    <div className="col-md-8 main__container">
+                    <div className="col-md-8 ">
                         <Main />
                     </div>
                 </div>

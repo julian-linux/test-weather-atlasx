@@ -9,8 +9,8 @@ class Collapsible extends Component {
         super(props);
 
         this.state = {
-            open: true,
-            actualIcon: 'chevron-up',
+            open: props.isOpen,
+            actualIcon: props.isOpen ? 'chevron-up' : 'chevron-down',
         };
 
         this.hideContent = this.hideContent.bind(this);
@@ -53,7 +53,7 @@ class Collapsible extends Component {
         const { children } = this.props;
 
         return (
-            <div className="row collapsible__main mt-4">
+            <div className="row collapsible__main">
                 <div className="col-12">{title}</div>
                 <div className="col-12">
                     <Collapse
@@ -77,6 +77,11 @@ Collapsible.propTypes = {
     icon: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    isOpen: PropTypes.bool,
+};
+
+Collapsible.defaultProps = {
+    isOpen: true,
 };
 
 export default Collapsible;
