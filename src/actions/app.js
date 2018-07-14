@@ -53,4 +53,17 @@ const selectCity = city => (dispatch, getState) => {
     }
 };
 
-export { init, selectCity };// eslint-disable-line
+const addFilteredCity = city => (dispatch) => {
+    dispatch(actionCreator.appAddFilteredCity(city));
+};
+
+const removeFilteredCity = city => (dispatch) => {
+    dispatch(actionCreator.appRemoveFilteredCity(city));
+};
+
+export {
+    init,
+    selectCity,
+    addFilteredCity,
+    removeFilteredCity,
+};// eslint-disable-line

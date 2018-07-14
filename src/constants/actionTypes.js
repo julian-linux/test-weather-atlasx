@@ -13,6 +13,10 @@ const actionTypes = keyMirrorNested({
                 SUCCESS: null,
                 ERROR: null,
             },
+            FILTER: {
+                ADD: null,
+                REMOVE: null,
+            },
         },
     },
 }, '_');

@@ -24,4 +24,12 @@ export default {
         error,
         type: actionTypes.APP.CITY.REQUEST.ERROR,
     }),
+    appAddFilteredCity: city => ({
+        city,
+        type: actionTypes.APP.CITY.FILTER.ADD,
+    }),
+    appRemoveFilteredCity: city => ({
+        city,
+        type: actionTypes.APP.CITY.FILTER.REMOVE,
+    }),
 };

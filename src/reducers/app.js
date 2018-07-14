@@ -9,6 +9,11 @@ const initialState = {
     cities: [],
     minTemp: 0,
     maxTemp: 0,
+    filteredCities: [],
+    filteredTemp: {
+        min: 0,
+        max: 0,
+    },
 };
 
 const getTemps = (cities) => {
@@ -93,6 +98,18 @@ const weather = (state = initialState, action) => {
         return {
             ...state,
             error: action.error,
+        };
+
+    case actionTypes.APP.CITY.FILTER.ADD:
+        return {
+            ...state,
+            ...state.filteredCities.push(action.city),
+        };
+
+    case actionTypes.APP.CITY.FILTER.REMOVE:
+        return {
+            ...state,
+            filteredCities: state.filteredCities.filter(city => city.id !== action.city.id),
         };
 
     default:
