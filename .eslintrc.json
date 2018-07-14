@@ -1,0 +1,29 @@
+{
+    "extends": "airbnb",
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "no-unused-vars":"warn",
+        "no-console":"warn",
+        "quotes":"warn",
+        "no-case-declarations": "off",
+        "indent": [
+            "error",
+            4
+        ],
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "linebreak-style": "off",
+        "react/jsx-indent": [
+            1,
+            4
+        ],
+        "react/jsx-indent-props": [
+            1,
+            4
+        ]
+    }
+}
