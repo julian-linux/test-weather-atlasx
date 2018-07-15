@@ -4,6 +4,7 @@ node_modules
 .project
 .strong-pm
 coverage
+dist
 
 npm-debug.log
 

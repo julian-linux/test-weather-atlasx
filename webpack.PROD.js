@@ -12,7 +12,7 @@ const ROOT_PATH = path.resolve(__dirname);
 const SRC_DIR = path.resolve(__dirname, 'src');
 const ASSETS_DIR = path.resolve(SRC_DIR, 'assets');
 
-const PROD_PATH = path.resolve(ROOT_PATH, '../api', 'client');
+const PROD_PATH = path.resolve(ROOT_PATH, 'dist');
 
 const {
     baseConfig,
@@ -30,7 +30,6 @@ const plugins = basePlugins.concat([
         {
             filename: 'index.html',
             template: path.resolve(ASSETS_DIR, 'main.html'),
-            favicon: path.join(ROOT_PATH, 'src/assets/icons/favicon.ico')
         }
     ),
     new webpack.DefinePlugin({
