@@ -18,6 +18,7 @@ const actionTypes = keyMirrorNested({
                 REMOVE: null,
             },
         },
+        CHANGETEMP: null,
     },
 }, '_');
 

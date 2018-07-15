@@ -61,9 +61,12 @@ const removeFilteredCity = city => (dispatch) => {
     dispatch(actionCreator.appRemoveFilteredCity(city));
 };
 
+const changeTemp = temp => actionCreator.appChangeTemp(temp);
+
 export {
     init,
     selectCity,
     addFilteredCity,
     removeFilteredCity,
+    changeTemp,
 };// eslint-disable-line

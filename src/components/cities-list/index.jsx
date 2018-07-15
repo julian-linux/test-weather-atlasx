@@ -16,7 +16,7 @@ class CitiesList extends Component {
     //     return nextProps.appState.selectedCity !== this.props.appState.selectedCity;
     // }
 
-    setCityInfo(city) {
+    setCityInfo(city, idx) {
         const { appState: { selectedCity } } = this.props;
         const active = selectedCity === city.id;
         return (
@@ -29,13 +29,13 @@ class CitiesList extends Component {
             >
                 <div className="row">
                     <div className="col-12">
-                        <h5 className="">{city.name} </h5>
+                        <h5 className="">{idx}{city.name} </h5>
                     </div>
                     <div className="col-12">
                         <p className="cities-list-item">
                             <span className="fas fa-thermometer-empty" />&nbsp;
-                            {city.main.temp}F.&nbsp;
-                            Min. {city.main.temp_min}.&nbsp;
+                            {city.main.temp}F&nbsp;
+                            Min. {city.main.temp_min}&nbsp;
                             Max. {city.main.temp_max}
                         </p>
                         <p className="cities-list-item">
@@ -43,7 +43,6 @@ class CitiesList extends Component {
                         </p>
                     </div>
                 </div>
-
             </ListGroupItem>
         );
     }
@@ -58,16 +57,26 @@ class CitiesList extends Component {
     }
 
     render() {
-        const { cities, filteredCities } = this.props.appState;
+        const { cities, filteredCities, filteredTemp } = this.props.appState;
+        const hasTempFilter = filteredTemp.max > 0 && filteredTemp.min > 0;
+        const hasCitiesFilter = !!filteredCities.length;
 
         const list = cities
             .filter((city) => {
-                if (filteredCities.length === 0) {
-                    return true;
+                let tempFilter = true;
+                let cityFilter = true;
+
+                if (hasCitiesFilter) {
+                    cityFilter = filteredCities.filter(search => search.id === city.id).length;
                 }
-                return filteredCities.filter(search => search.id === city.id).length;
+
+                if (hasTempFilter) {
+                    tempFilter = city.main.temp_min >= filteredTemp.min &&
+                        city.main.temp_max <= filteredTemp.max;
+                }
+                return tempFilter && cityFilter;
             })
-            .map(city => this.setCityInfo(city));
+            .map((city, idx) => this.setCityInfo(city, idx));
 
         return (
             <div className="row">

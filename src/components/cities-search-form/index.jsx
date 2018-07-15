@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 
 import citiesList from 'config/cities';
 import PropTypes from 'prop-types';// eslint-disable-line
-import { Button, Input, ListGroup, ListGroupItem } from 'reactstrap';
+import { Input, ListGroup, ListGroupItem } from 'reactstrap';
+import InputRange from 'react-input-range';
+import { addFilteredCity, removeFilteredCity, changeTemp } from 'actions/app';
 
-import { addFilteredCity, removeFilteredCity } from 'actions/app';
-
+import 'react-input-range/lib/css/index.css';
 import './styles.scss';
 
 const getCities = searchText => citiesList.filter((city) => {
@@ -24,11 +25,17 @@ class SearchForm extends Component {
             showResults: false,
             listCities: [],
             position: 0,
+            tempValues: {
+                min: Math.round(props.appState.filteredTemp.min),
+                max: Math.round(props.appState.filteredTemp.max) + 1,
+            },
         };
         this.updateSearhText = this.updateSearhText.bind(this);
         this.selectPosition = this.selectPosition.bind(this);
         this.selectPositionListElement = this.selectPositionListElement.bind(this);
         this.removeFilteredCity = this.removeFilteredCity.bind(this);
+        this.changeFilterTemp = this.changeFilterTemp.bind(this);
+        this.updateFiltersWithTemp = this.updateFiltersWithTemp.bind(this);
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -170,13 +177,24 @@ class SearchForm extends Component {
         ));
     }
 
+    changeFilterTemp(tempValues) {
+        this.setState({ tempValues });
+    }
+
+    updateFiltersWithTemp(tempValues) {
+        this.props.actionChangeTemp(tempValues);
+    }
+
     removeFilteredCity(evt, city) {
         evt.preventDefault();
         this.props.actionRemovefilteredCity(city);
     }
 
     render() {
-        const isFetching = false;
+        let { minTemp, maxTemp } = this.props.appState;// eslint-disable-line
+        minTemp = Math.round(minTemp);
+        maxTemp = Math.round(maxTemp) + 1;
+        // console.log("minValue, maxValue", minValue, maxValue);
         const listResults = this.getListResults();
         const filteredCities = this.getFilteredCities();
         return (
@@ -194,14 +212,19 @@ class SearchForm extends Component {
                 <div className="col-12">
                     {filteredCities}
                 </div>
+                <div className="col-12 mt-3 text-center">
+                    <h6 className="text-primary">Temp Range</h6>
+                </div>
                 <div className="col-12 text-right mt-2">
-                    <Button
-                        color="primary"
-                        onClick={this.searchForm}
-                        disabled={isFetching}
-                    >
-                        Search
-                    </Button>
+                    <InputRange
+
+                        maxValue={maxTemp}// eslint-disable-line
+                        minValue={minTemp}// eslint-disable-line
+                        step={1}
+                        onChange={value => this.changeFilterTemp(value)}
+                        onChangeComplete={range => this.updateFiltersWithTemp(range)}
+                        value={this.state.tempValues}
+                    />
                 </div>
             </div>
         );
@@ -212,6 +235,7 @@ SearchForm.propTypes = {
     appState: PropTypes.object,// eslint-disable-line
     actionAddFilteredCity: PropTypes.func.isRequired,
     actionRemovefilteredCity: PropTypes.func.isRequired,// eslint-disable-line
+    actionChangeTemp: PropTypes.func.isRequired,// eslint-disable-line
 };
 
 const mapStateToProps = state => ({// eslint-disable-line
@@ -221,6 +245,7 @@ const mapStateToProps = state => ({// eslint-disable-line
 const mapDispatchToProps = ({
     actionAddFilteredCity: addFilteredCity,
     actionRemovefilteredCity: removeFilteredCity,
+    actionChangeTemp: changeTemp,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);

@@ -30,7 +30,7 @@ const getTemps = (cities) => {
         if (city.main.temp_min < min) {
             min = city.main.temp_min;
         }
-        if (city.main.temp_max < max) {
+        if (city.main.temp_max > max) {
             max = city.main.temp_max;
         }
     });
@@ -40,6 +40,7 @@ const getTemps = (cities) => {
 
 const weather = (state = initialState, action) => {
     let filteredCities;
+    let filteredTemp;
     switch (action.type) {
     case actionTypes.APP.REQUEST.INIT:
         return {
@@ -61,6 +62,7 @@ const weather = (state = initialState, action) => {
 
         const selectedCity = Lockr.get('selectedCity');
         filteredCities = Lockr.get('filteredCities') || [];
+        filteredTemp = Lockr.get('filteredTemp') || { min: 0, max: 0 };
 
         return {
             ...state,
@@ -70,6 +72,7 @@ const weather = (state = initialState, action) => {
             maxTemp: temps.max,
             selectedCity,
             filteredCities,
+            filteredTemp,
         };
 
     case actionTypes.APP.REQUEST.ERROR:
@@ -122,6 +125,15 @@ const weather = (state = initialState, action) => {
         return {
             ...state,
             filteredCities,
+        };
+
+    case actionTypes.APP.CHANGETEMP:
+        filteredTemp = action.temp;
+        Lockr.set('filteredTemp', filteredTemp);
+
+        return {
+            ...state,
+            filteredTemp,
         };
 
     default:

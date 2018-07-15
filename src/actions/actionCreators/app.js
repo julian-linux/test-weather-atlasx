@@ -32,4 +32,8 @@ export default {
         city,
         type: actionTypes.APP.CITY.FILTER.REMOVE,
     }),
+    appChangeTemp: temp => ({
+        temp,
+        type: actionTypes.APP.CHANGETEMP,
+    }),
 };
